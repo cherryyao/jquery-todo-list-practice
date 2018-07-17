@@ -22,4 +22,18 @@ $(document)
         }
 
         // code to be implemented
+            $("#button").click(function(){
+                x = $(".input-text").val();
+                $("ol").append(" <li id="+generateUUID()+" class=''><input name='done-todo' type='checkbox' class='done-todo'>"+x+" </li>");
+            });
+        
+            $(document).on("click",".done-todo",function(){
+                $(this).parent().toggleClass("checked");
+            });
+
+            $("active").click(function(){
+                $("checked").hide;
+            });
+
+
     });
