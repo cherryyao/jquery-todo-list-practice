@@ -24,16 +24,34 @@ $(document)
         // code to be implemented
             $("#button").click(function(){
                 x = $(".input-text").val();
-                $("ol").append(" <li id="+generateUUID()+" class=''><input name='done-todo' type='checkbox' class='done-todo'>"+x+" </li>");
+                $("ol").append(" <li id="+generateUUID()+" class='uncheck'><input name='done-todo' type='checkbox' class='done-todo'>"+x+" </li>");
             });
         
             $(document).on("click",".done-todo",function(){
                 $(this).parent().toggleClass("checked");
             });
 
-            $("active").click(function(){
-                $("checked").hide;
+            // $(".active").click(function(){
+            //     $("checked").hide;
+            // });
+            
+            $(".all").click(function(){
+                $(".checked").css("display","block");
             });
+
+            $(".active").click(function(){
+                $(".checked").removeClass("display");
+                $(".checked").css("display","none");
+            });
+            //  $(".complete").click(function(){
+            //     //$(".checked").css("display","block");
+            //     $(".uncheck").css("display","none");
+            //  });
+
+           
+            
+
+            
 
 
     });
