@@ -48,13 +48,36 @@ function generateUUID() {
         checkItem.iscomplete = !checkItem.iscomplete;
        }
        render();
-
+    }
+    function filterByStatus(todos,status){
+        const filterEvent ={
+            all(){
+                return true;
+            },
+            active(e){
+                return !e.iscomplete;
+            },
+            complete(e){
+                return e.iscomplete;
+            }
+        }
+        const result = todos.filter(filterEvent[status]);
+        return result;
+    }
+    window.showTodoList=(filterType)=>{
+        Form.status = filterType;
+        render();
     }
 
 
 
 
-    function bulidHTML(){
+
+
+    function bulidHTML(Form){
+        let todoViewItem = (x) =>`<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : '' }">
+        <input name="done-todo" type="checkbox" class="done-todo" onchange="checkItem('${x.id}')" ${ x.iscomplete ? 'checked' : ''}> ${x.content} </li>`
+        
     let template =`
             <div>
             <input class="input-text" type="text" name="ListItem" data-com.agilebits.onepassword.user-edited="yes">
@@ -62,18 +85,18 @@ function generateUUID() {
         </div>
         <br>
         <ol>
-            ${buildTodoList()}
+        ${filterByStatus(Form.todos, Form.status).map(todoViewItem).join("")}
         </ol>
         <div>
             <ul id="filters">
                 <li>
-                    <a href="#" data-filter="all" class="selected">ALL</a>
+                    <a href="#" data-filter="all" class="${Form.status=="all"?"selected":""}" onclick="showTodoList('all')" >ALL</a>
                 </li>
                 <li>
-                    <a href="#" data-filter="active" class="">Active</a>
+                    <a href="#" data-filter="active" class="${Form.status=="active"?"selected":""}"  onclick="showTodoList('active')" >Active</a>
                 </li>
                 <li>
-                    <a href="#" data-filter="complete" class="">Complete</a>
+                    <a href="#" data-filter="complete" class="${Form.status=="complete"?"selected":""}"  onclick="showTodoList('complete')" >Complete</a>
                 </li>
             </ul>
         </div>
@@ -82,12 +105,8 @@ function generateUUID() {
     }
 
     const render =() =>{
-        $('#todoForm').html(bulidHTML());
+        $('#todoForm').html(bulidHTML(Form));
     }
 
     render();
-
-
-    
-    
 });
