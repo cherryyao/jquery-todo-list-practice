@@ -24,30 +24,33 @@ function generateUUID() {
         // code to be implemented
 
         const Form = {
-            todos : [
-                {
-                    content:"Parking Lot APP Refactor",
-                    iscomplete:false
-                },
-                {                    
-                    content:" Parking Lot APP 时序图 ",
-                    iscomplete:true
-                }
-            ],
+            todos : [],
             status:"all"
         }
 
     function buildTodoList(){
         str = '';
-        console.log(Form.todos);
         for(let x of Form.todos){
-            console.log(x)
-            str += `<li id="${generateUUID()}" class=" ${ x.iscomplete ? 'checked' : '' }">
-                         <input name="done-todo" type="checkbox" class="done-todo"> ${x.content} </li>`;
+            str += `<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : '' }">
+                         <input name="done-todo" type="checkbox" class="done-todo" onchange="checkItem('${x.id}')" ${ x.iscomplete ? 'checked' : ''}> ${x.content} </li>`;
         }
-        console.log(str);
         return str;
     }
+
+    window.addItem=()=>{
+        const inputValue = $('input[name=ListItem]').val()
+        Form.todos.push({id:generateUUID(),content:inputValue,iscomplete:false});
+        render();
+    }
+    window.checkItem=(viewId)=>{
+       let checkItem = Form.todos.find(item => item.id === viewId)
+       if(checkItem!=undefined){
+        checkItem.iscomplete = !checkItem.iscomplete;
+       }
+       render();
+
+    }
+
 
 
 
@@ -55,7 +58,7 @@ function generateUUID() {
     let template =`
             <div>
             <input class="input-text" type="text" name="ListItem" data-com.agilebits.onepassword.user-edited="yes">
-            <div id="button">Add</div>
+            <div id="button" onClick="addItem()">Add</div>
         </div>
         <br>
         <ol>
