@@ -28,14 +28,14 @@ function generateUUID() {
             status:"all"
         }
 
-    function buildTodoList(){
-        str = '';
-        for(let x of Form.todos){
-            str += `<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : '' }">
-                         <input name="done-todo" type="checkbox" class="done-todo" onchange="checkItem('${x.id}')" ${ x.iscomplete ? 'checked' : ''}> ${x.content} </li>`;
-        }
-        return str;
-    }
+    // function buildTodoList(){
+    //     str = '';
+    //     for(let x of Form.todos){
+    //         str += `<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : '' }">
+    //                      <input name="done-todo" type="checkbox" class="done-todo" onchange="checkItem('${x.id}')" ${ x.iscomplete ? 'checked' : ''}> ${x.content} </li>`;
+    //     }
+    //     return str;
+    // }
 
     window.addItem=()=>{
         const inputValue = $('input[name=ListItem]').val()
@@ -68,14 +68,21 @@ function generateUUID() {
         Form.status = filterType;
         render();
     }
-
-
-
-
-
+    window.editItem=(event,viewId)=>{
+        console.log("aaaa");
+        $(event.target).attr("contentEditable","true").focus()
+        .keypress(function(event){
+            var keycode = (event.keyCode?event.keyCode:event.which);
+            if(keycode == '13'){
+                Form.todos.find(element => element.id===viewId).content=$(event.target).text();
+                render();
+            }
+        })
+        
+    }
 
     function bulidHTML(Form){
-        let todoViewItem = (x) =>`<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : '' }">
+        let todoViewItem = (x) =>`<li id="${x.id}" class=" ${ x.iscomplete ? 'checked' : ''}" ondblclick="editItem(event,'${x.id}')">
         <input name="done-todo" type="checkbox" class="done-todo" onchange="checkItem('${x.id}')" ${ x.iscomplete ? 'checked' : ''}> ${x.content} </li>`
         
     let template =`
